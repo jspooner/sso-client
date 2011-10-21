@@ -1,0 +1,1 @@
+require 'bsm/sso/client'
