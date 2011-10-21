@@ -8,6 +8,8 @@ require 'rails_warden'
 module Bsm
   module Sso
     module Client
+      UnauthorizedAccess = Class.new(ActionController::ActionControllerError)
+
       autoload :AbstractResource, 'bsm/sso/client/abstract_resource'
       autoload :User, 'bsm/sso/client/user'
       autoload :UserMethods, 'bsm/sso/client/user_methods'
@@ -46,6 +48,12 @@ module Bsm
         #   end
         def configure(&block)
           tap(&block)
+        end
+
+        # Raises an UnauthorizedAccess exception
+        def forbidden!(request, message = nil)
+          message ||= "You are not permitted to access the resource in #{request.path}"
+          raise UnauthorizedAccess, message
         end
 
       end

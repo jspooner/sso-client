@@ -20,7 +20,7 @@ class Bsm::Sso::Client::Railtie < ::Rails::Railtie
 
   def self.handle_exceptions!
     return unless defined?(::ActionDispatch::ShowExceptions)
-    ActionDispatch::ShowExceptions.rescue_responses.update("Bsm::Sso::Client::FailureApp::UnauthorizedAccess" => :forbidden)
+    ActionDispatch::ShowExceptions.rescue_responses.update("Bsm::Sso::Client::UnauthorizedAccess" => :forbidden)
   end
 
   def self.plugin!(app)

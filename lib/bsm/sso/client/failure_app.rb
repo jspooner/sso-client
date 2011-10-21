@@ -4,7 +4,6 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
   include Bsm::Sso::Client::UrlHelpers
 
   NAVIGATIONAL_FORMATS = [:html, :all, :js, nil].to_set.freeze
-  UnauthorizedAccess   = Class.new(ActionController::ActionControllerError)
 
   def self.call(env)
     action(:respond).call(env)
@@ -34,8 +33,7 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
 
   # Throws UnauthorizedAccess (rescued as 403 Forbidden response)
   def stop!(message = nil)
-    message ||= "You are not permitted to access the resource in #{request.path}"
-    raise UnauthorizedAccess, message
+    Bsm::Sso::Client.forbidden!(request, message)
   end
 
 end
