@@ -1,11 +1,5 @@
-class Bsm::Sso::Client::User < ActiveResource::Base
-  self.format = :json
-
+class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
   class << self
-
-    def headers
-      { 'AUTHORIZATION' => Bsm::Sso::Client.verifier.generate(30.seconds.from_now) }
-    end
 
     def consume(ticket, service)
       # TODO rename Sso endpoint to /validate

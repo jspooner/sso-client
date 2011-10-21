@@ -14,7 +14,8 @@ Dir[File.join(File.dirname(__FILE__), "support", "**/*.rb")].each do |f|
   require f
 end
 
-Bsm::Sso::Client::User.site = "https://sso.test.host"
+Bsm::Sso::Client.site = "https://sso.test.host"
+
 RSpec.configure do |c|
   c.include(Bsm::Sso::Client::SpecHelpers)
 

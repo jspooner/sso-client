@@ -8,6 +8,7 @@ require 'rails_warden'
 module Bsm
   module Sso
     module Client
+      autoload :AbstractResource, 'bsm/sso/client/abstract_resource'
       autoload :User, 'bsm/sso/client/user'
       autoload :UserMethods, 'bsm/sso/client/user_methods'
       autoload :UrlHelpers, 'bsm/sso/client/url_helpers'
@@ -24,7 +25,7 @@ module Bsm
 
       class << self
 
-        delegate :site=, :site, :to => :"Bsm::Sso::Client::User"
+        delegate :site=, :site, :to => :"Bsm::Sso::Client::AbstractResource"
 
         def user_class
           @@user_class || Bsm::Sso::Client::User
