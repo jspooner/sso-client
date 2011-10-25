@@ -9,24 +9,28 @@ module Bsm::Sso::Client::UserMethods
 
   module ClassMethods
 
-    def sso_find(*a)
-      result = Bsm::Sso::Client::User.sso_find(*a)
-      new(result.attributes) if result
+    def sso_find(id)
+      resource = Bsm::Sso::Client::User.sso_find(id)
+      sso_cache(resource, :find) if resource
     end
 
     def sso_consume(*a)
-      result = Bsm::Sso::Client::User.sso_consume(*a)
-      new(result.attributes) if result
+      resource = Bsm::Sso::Client::User.sso_consume(*a)
+      sso_cache(resource, :consume) if resource
     end
 
     def sso_authenticate(*a)
-      result = Bsm::Sso::Client::User.sso_authenticate(*a)
-      new(result.attributes) if result
+      resource = Bsm::Sso::Client::User.sso_authenticate(*a)
+      sso_cache(resource, :authenticate) if resource
     end
 
     def sso_authorize(*a)
-      result = Bsm::Sso::Client::User.sso_authorize(*a)
-      new(result.attributes) if result
+      resource = Bsm::Sso::Client::User.sso_authorize(*a)
+      sso_cache(resource, :authorize) if resource
+    end
+
+    def sso_cache(resource, action = nil)
+      new(resource.attributes)
     end
 
   end
