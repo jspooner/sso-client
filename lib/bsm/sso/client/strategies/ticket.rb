@@ -10,5 +10,7 @@ class Bsm::Sso::Client::Strategies::Ticket < Bsm::Sso::Client::Strategies::Base
     u.nil? ? fail!(:invalid) : success!(u)
   end
 
-  Warden::Strategies.add :sso_ticket, self
 end
+
+Warden::Strategies.add :sso_ticket, Bsm::Sso::Client::Strategies::Ticket
+

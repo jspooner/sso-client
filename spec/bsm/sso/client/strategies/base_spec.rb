@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Bsm::Sso::Client::Strategies::Base do
 
   subject do
-    Bsm::Sso::Client::Strategies::Ticket # Load
     Warden::Strategies[:sso_ticket].new(env_with_params)
   end
 
