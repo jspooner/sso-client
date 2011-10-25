@@ -3,24 +3,24 @@ module Bsm::Sso::Client::UserMethods
 
   included do
     class << self
-      delegate :sign_in_url, :sign_out_url, :to => :"Bsm::Sso::Client::User"
+      delegate :sso_sign_in_url, :sso_sign_out_url, :to => :"Bsm::Sso::Client::User"
     end
   end
 
   module ClassMethods
 
-    def consume(*a)
-      result = Bsm::Sso::Client::User.consume(*a)
+    def sso_consume(*a)
+      result = Bsm::Sso::Client::User.sso_consume(*a)
       new(result.attributes) if result
     end
 
-    def authenticate(*a)
-      result = Bsm::Sso::Client::User.authenticate(*a)
+    def sso_authenticate(*a)
+      result = Bsm::Sso::Client::User.sso_authenticate(*a)
       new(result.attributes) if result
     end
 
-    def authorize(*a)
-      result = Bsm::Sso::Client::User.authorize(*a)
+    def sso_authorize(*a)
+      result = Bsm::Sso::Client::User.sso_authorize(*a)
       new(result.attributes) if result
     end
 

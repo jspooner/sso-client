@@ -22,7 +22,7 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
   end
 
   def redirect!
-    redirect_to Bsm::Sso::Client.user_class.sign_in_url(:service => service_url(env["warden.options"][:attempted_path])), :status => 303
+    redirect_to Bsm::Sso::Client.user_class.sso_sign_in_url(:service => service_url(env["warden.options"][:attempted_path])), :status => 303
   end
 
   def respond_with_js!

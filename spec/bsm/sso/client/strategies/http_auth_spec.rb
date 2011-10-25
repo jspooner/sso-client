@@ -28,13 +28,13 @@ describe Bsm::Sso::Client::Strategies::HttpAuth do
     strategy("Basic dXNlcjp4\n").token.should == "user"
   end
 
-  it "should authenticate user via consume" do
-    Bsm::Sso::Client.user_class.should_receive(:authorize).with('user').and_return(Bsm::Sso::Client.user_class.new(:id => 123))
+  it "should authenticate user via authorize" do
+    Bsm::Sso::Client.user_class.should_receive(:sso_authorize).with('user').and_return(Bsm::Sso::Client.user_class.new(:id => 123))
     strategy("Basic dXNlcjp4\n").authenticate!.should == :success
   end
 
-  it "should fail authentication authenticate if user is not consumable" do
-    Bsm::Sso::Client.user_class.should_receive(:authorize).with('user').and_return(nil)
+  it "should fail authentication authenticate if user is not authorizable" do
+    Bsm::Sso::Client.user_class.should_receive(:sso_authorize).with('user').and_return(nil)
     strategy("Basic dXNlcjp4\n").authenticate!.should == :failure
   end
 

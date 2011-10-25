@@ -18,11 +18,11 @@ describe Bsm::Sso::Client::UserMethods do
   end
 
   it 'should delegate methods to the user resource' do
-    subject.consume('T', 'S').should be_a(described_class)
-    subject.authorize('TOK').should be_a(described_class)
-    subject.authenticate(:email => "e", :password => "p").should be_a(described_class)
-    subject.sign_in_url.should == "https://sso.test.host/sign_in"
-    subject.sign_out_url.should == "https://sso.test.host/sign_out"
+    subject.sso_consume('T', 'S').should be_a(described_class)
+    subject.sso_authorize('TOK').should be_a(described_class)
+    subject.sso_authenticate(:email => "e", :password => "p").should be_a(described_class)
+    subject.sso_sign_in_url.should == "https://sso.test.host/sign_in"
+    subject.sso_sign_out_url.should == "https://sso.test.host/sign_out"
   end
 
 end

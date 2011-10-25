@@ -9,7 +9,7 @@ class Bsm::Sso::Client::Strategies::HttpAuth < Bsm::Sso::Client::Strategies::Bas
   end
 
   def authenticate!
-    u = user_class.authorize(token)
+    u = user_class.sso_authorize(token)
     u.nil? ? fail!(:invalid) : success!(u)
   end
 
