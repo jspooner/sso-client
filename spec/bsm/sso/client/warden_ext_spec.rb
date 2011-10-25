@@ -19,7 +19,7 @@ describe Warden::SessionSerializer do
 
   it "should retrieve users from SSO API" do
     @session.store(user, :default)
-    Bsm::Sso::Client::User.should_receive(:find_for_sso).with(123).and_return(user)
+    Bsm::Sso::Client::User.should_receive(:sso_find).with(123).and_return(user)
     @session.fetch(:default).should == user
   end
 

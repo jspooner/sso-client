@@ -5,7 +5,7 @@ class Warden::SessionSerializer
   end
 
   def deserialize(id)
-    Bsm::Sso::Client.user_class.find_for_sso(id)
+    Bsm::Sso::Client.user_class.sso_find(id)
   end
 
 end

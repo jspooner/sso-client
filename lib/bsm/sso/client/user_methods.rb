@@ -9,6 +9,11 @@ module Bsm::Sso::Client::UserMethods
 
   module ClassMethods
 
+    def sso_find(*a)
+      result = Bsm::Sso::Client::User.sso_find(*a)
+      new(result.attributes) if result
+    end
+
     def sso_consume(*a)
       result = Bsm::Sso::Client::User.sso_consume(*a)
       new(result.attributes) if result
