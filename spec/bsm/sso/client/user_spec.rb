@@ -11,7 +11,7 @@ describe Bsm::Sso::Client::User do
   it 'should consume tickets' do
     stub_request(:any, //).to_return(:body => "{}")
     described_class.sso_consume('T', 'S')
-    a_request(:get, "https://sso.test.host/validate?service=S&ticket=T").should have_been_made
+    a_request(:get, "https://sso.test.host/consume?service=S&ticket=T").should have_been_made
   end
 
   it 'should authorize with tokens' do

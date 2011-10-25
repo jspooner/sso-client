@@ -6,8 +6,7 @@ class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
     end
 
     def sso_consume(ticket, service)
-      # TODO rename Sso endpoint to /validate
-      find :one, :from => '/validate', :params => { :ticket => ticket, :service => service }
+      find :one, :from => '/consume', :params => { :ticket => ticket, :service => service }
     rescue ActiveResource::ResourceInvalid
       nil
     end
