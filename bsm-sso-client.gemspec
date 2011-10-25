@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 1.8.7'
+  s.required_ruby_version = '>= 1.9.2'
   s.required_rubygems_version = ">= 1.3.6"
 
   s.name        = "bsm-sso-client"
