@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Bsm::Sso::Client::Strategies::Ticket do
 
   def strategy(params = {})
-    Warden::Strategies[:sso_ticket].new(env_with_params('/', params))
+    described_class.new(env_with_params('/', params))
   end
 
   it { strategy.should be_a(described_class) }

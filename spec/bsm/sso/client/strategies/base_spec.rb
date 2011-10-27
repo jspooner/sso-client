@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Bsm::Sso::Client::Strategies::Base do
 
   subject do
-    Warden::Strategies[:sso_ticket].new(env_with_params)
+    described_class.new(env_with_params)
   end
 
   it { should be_a(described_class) }

@@ -5,7 +5,7 @@ describe Bsm::Sso::Client::Strategies::HttpAuth do
   def strategy(authorization = nil)
     env = {}
     env['HTTP_AUTHORIZATION'] = authorization if authorization
-    Warden::Strategies[:sso_http_auth].new(env_with_params('/', {}, env))
+    described_class.new(env_with_params('/', {}, env))
   end
 
   it { strategy.should be_a(described_class) }
