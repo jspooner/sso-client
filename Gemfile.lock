@@ -2,10 +2,10 @@ PATH
   remote: .
   specs:
     bsm-sso-client (0.3.4)
-      actionpack (>= 3.0.0, < 3.2.0)
-      activeresource (>= 3.0.0, < 3.2.0)
+      actionpack (>= 3.1.0, < 3.2.0)
+      activeresource (>= 3.1.0, < 3.2.0)
       rails_warden (~> 0.5.0)
-      railties (>= 3.0.0, < 3.2.0)
+      railties (>= 3.1.0, < 3.2.0)
 
 GEM
   remote: http://rubygems.org/
