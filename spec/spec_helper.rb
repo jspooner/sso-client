@@ -15,6 +15,7 @@ Dir[File.join(File.dirname(__FILE__), "support", "**/*.rb")].each do |f|
 end
 
 Bsm::Sso::Client.site = "https://sso.test.host"
+Bsm::Sso::Client.expire_after = 1.hour
 
 RSpec.configure do |c|
   c.include(Bsm::Sso::Client::SpecHelpers)

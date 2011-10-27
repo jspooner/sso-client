@@ -34,4 +34,12 @@ describe Bsm::Sso::Client::User do
     described_class.sso_sign_out_url(:a => '1').should == "https://sso.test.host/sign_out?a=1"
   end
 
+  it 'should set expiration time on consuming' do
+    Time.should_receive(:now).and_return(Time.at(10))
+    user = mock "User"
+    user.should_receive(:expires_at=).with(Time.at(10) + 1.hour)
+    described_class.should_receive(:find).and_return(user)
+    described_class.sso_consume('T', 'S')
+  end
+
 end
