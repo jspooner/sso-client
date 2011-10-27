@@ -6,7 +6,7 @@ describe Bsm::Sso::Client do
     described_class.configure do |c|
       c.should respond_to(:site=)
       c.should respond_to(:secret=)
-      c.site.to_s.should   == "https://sso.test.host"
+      c.site.to_s.chomp('/').should   == "https://sso.test.host"
       c.secret.should == "SECRET"
     end
   end
