@@ -1,6 +1,4 @@
 class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
-  attr_accessor :expires_at
-
   class << self
 
     def sso_find(id)
@@ -8,7 +6,7 @@ class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
     end
 
     def sso_consume(ticket, service)
-      find_and_set_expiration :one, :from => '/consume', :params => { :ticket => ticket, :service => service }
+      find :one, :from => '/consume', :params => { :ticket => ticket, :service => service }
     rescue ActiveResource::ResourceInvalid
       nil
     end
@@ -37,12 +35,6 @@ class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
 
       def sso_custom_absolute_method_root_url(method_name, params = {})
         "#{site.to_s.chomp('/')}/#{method_name}#{query_string(params)}"
-      end
-
-      def find_and_set_expiration(*args)
-        user = find(*args)
-        user.expires_at = Time.now + Bsm::Sso::Client.expire_after
-        user
       end
 
   end
