@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Bsm::Sso::Client::AbstractResource do
 
   it 'should use site from configuration' do
-    described_class.site.to_s.should == 'https://sso.test.host/'
+    described_class.site.to_s.chomp('/').should == 'https://sso.test.host'
   end
 
   it 'should preset format' do
