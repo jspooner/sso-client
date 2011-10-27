@@ -11,8 +11,8 @@ describe Bsm::Sso::Client::AbstractResource do
   end
 
   it 'should set token in headers using secret' do
-    Time.stub! :now => Time.at(0)
-    described_class.headers.should == {"AUTHORIZATION"=>"BAhJdToJVGltZQ0ggBGAAADgAQc6C0Bfem9uZUkiCEJTVAY6BkVUOgtvZmZzZXRpAhAO--053a0134a0e1105fb0bc933be01bf7b092473331"}
+    Bsm::Sso::Client.verifier.stub :generate => "TOKEN"
+    described_class.headers.should == {"AUTHORIZATION"=>"TOKEN"}
   end
 
 end
