@@ -43,8 +43,20 @@ describe Warden::SessionSerializer do
       warden.set_user(user, :event => :authentication)
       env['rack.session'].should == { "warden.user.default.key"=>123, "warden.user.default.session"=>{"expire_at"=>1313134913} }
     end
-    it "should logout user when session expires on GET requests"
-    it "should continue even with expired sessions on non-GET"
+
+    it "should logout user when session expires on GET requests" do
+      warden.should_receive(:session).with(:default).and_return('expire_at' => 2.hours.ago)
+      warden.should_receive(:logout)
+      lambda { warden.set_user(user, :event => :fetch) }.should throw_symbol(:warden)
+    end
+
+
+    it "should continue even with expired sessions on non-GET" do
+      env["REQUEST_METHOD"] = "POST"
+      warden.should_receive(:session).with(:default).and_return('expire_at' => 2.hours.ago)
+      warden.should_not_receive(:logout)
+      lambda { warden.set_user(user, :event => :fetch) }.should_not throw_symbol(:warden)
+    end
 
   end
 
