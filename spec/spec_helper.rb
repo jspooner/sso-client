@@ -33,6 +33,8 @@ ActiveRecord::Base.connection.create_table :users do |t|
   t.string  :email
   t.string  :kind
   t.integer :level
+  t.string  :authentication_token
+  t.timestamps
 end
 
 class User < ActiveRecord::Base

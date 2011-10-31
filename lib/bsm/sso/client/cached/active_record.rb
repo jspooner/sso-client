@@ -7,7 +7,7 @@ module Bsm::Sso::Client::Cached::ActiveRecord
 
   included do
     validates       :id, :presence => true, :on => :create
-    attr_accessible :id, :email, :kind, :level, :as => :sso
+    attr_accessible :id, :email, :kind, :level, :authentication_token, :as => :sso
   end
 
   module ClassMethods
@@ -18,9 +18,17 @@ module Bsm::Sso::Client::Cached::ActiveRecord
     end
 
     # Cache!
+    def sso_authorize(token)
+      relation = where(arel_table[:updated_at].gt(Bsm::Sso::Client.expire_after.ago))
+      relation = relation.where(:authentication_token => token)
+      relation.first || super
+    end
+
+    # Cache!
     def sso_cache(resource, action = nil)
       if record = where(:id => resource.id).first
-        record.update_attributes! resource.attributes, :as => :sso
+        record.assign_attributes resource.attributes, :as => :sso
+        record.changed? ? record.save! : record.touch
         record
       else
         create! resource.attributes, :as => :sso
