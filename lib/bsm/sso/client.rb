@@ -15,6 +15,7 @@ module Bsm
       autoload :UserMethods, 'bsm/sso/client/user_methods'
       autoload :UrlHelpers, 'bsm/sso/client/url_helpers'
       autoload :FailureApp, 'bsm/sso/client/failure_app'
+      autoload :Cached, 'bsm/sso/client/cached'
 
       mattr_accessor :secret
       @@secret = nil
