@@ -41,7 +41,12 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
     User.sso_find(-1).should be_nil
   end
 
-  it 'should authorize as usaul when user is not cached' do
+  it 'should not authorize blank tokens' do
+    Bsm::Sso::Client::User.should_not_receive(:sso_authorize)
+    User.sso_authorize(" ").should be_nil
+  end
+
+  it 'should authorize as usual when user is not cached' do
     Bsm::Sso::Client::User.should_receive(:sso_authorize).and_return(nil)
     User.sso_authorize("SECRET").should be_nil
   end

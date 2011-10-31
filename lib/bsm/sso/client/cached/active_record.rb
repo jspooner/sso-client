@@ -19,6 +19,8 @@ module Bsm::Sso::Client::Cached::ActiveRecord
 
     # Cache!
     def sso_authorize(token)
+      return nil if token.blank?
+
       relation = where(arel_table[:updated_at].gt(Bsm::Sso::Client.expire_after.ago))
       relation = relation.where(:authentication_token => token)
       relation.first || super
