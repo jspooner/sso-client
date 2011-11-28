@@ -11,6 +11,13 @@ describe Bsm::Sso::Client do
     end
   end
 
+  it 'should allow to configure warden' do
+    described_class.warden_configuration.should be_nil
+    block = lambda {|m| }
+    described_class.warden &block
+    described_class.warden_configuration.should == block
+  end
+
   it 'should have a default user class' do
     described_class.user_class.should == described_class::User
   end

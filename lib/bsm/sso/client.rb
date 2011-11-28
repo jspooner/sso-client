@@ -26,6 +26,9 @@ module Bsm
       mattr_writer :user_class
       @@user_class = nil
 
+      mattr_accessor :warden_configuration
+      @@warden_configuration = nil
+
       class << self
 
         delegate :site=, :site, :to => :"Bsm::Sso::Client::AbstractResource"
@@ -49,6 +52,18 @@ module Bsm
         #   end
         def configure(&block)
           tap(&block)
+        end
+
+        # Warden configuration. Example:
+        #
+        #   # config/initializers/sso.rb
+        #   Bsm::Sso::Client.configure do |c|
+        #     c.warden do |manager|
+        #       manager.default_strategies << :my_strategy
+        #     end
+        #   end
+        def warden(&block)
+          @@warden_configuration = block
         end
 
         # Raises an UnauthorizedAccess exception
