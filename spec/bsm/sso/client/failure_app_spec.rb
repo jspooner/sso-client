@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Bsm::Sso::Client::FailureApp do
 
   let :env do
-    env_with_params.merge("warden.options" => { :attempted_path => '/' })
+    env_with_params.merge("warden.options" => { :attempted_path => '/?a=1&b[]=2&b[]=3' })
   end
 
   let :response do
@@ -14,7 +14,7 @@ describe Bsm::Sso::Client::FailureApp do
 
     it "should redirect to SSO" do
       response.code.should == "303"
-      response.location.should == "https://sso.test.host/sign_in?service=http%3A%2F%2Fexample.org%2F"
+      response.location.should == "https://sso.test.host/sign_in?service=http%3A%2F%2Fexample.org%2F%3Fa%3D1%26b%5B%5D%3D2%26b%5B%5D%3D3"
     end
 
   end
