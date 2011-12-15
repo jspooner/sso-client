@@ -1,4 +1,9 @@
 require 'rails'
+require 'active_support/message_verifier'
+require 'active_support/memoizable'
+require 'active_support/core_ext/object/acts_like'
+require 'active_support/core_ext/time/acts_like'
+require 'active_support/core_ext/date_time/acts_like'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
 require 'active_resource'
@@ -26,8 +31,17 @@ module Bsm
       mattr_writer :user_class
       @@user_class = nil
 
+      mattr_accessor :user_attributes
+      @@user_attributes = {}
+
       mattr_accessor :warden_configuration
       @@warden_configuration = nil
+
+      mattr_reader :navigational_formats
+      @@navigational_formats = [:html, :all, :js, nil].to_set
+
+      mattr_reader :api_formats
+      @@api_formats = [:xml, :json].to_set
 
       class << self
 
@@ -35,6 +49,10 @@ module Bsm
 
         def user_class
           @@user_class || Bsm::Sso::Client::User
+        end
+
+        def user_instance
+          user_class.new(user_attributes)
         end
 
         # Default message verifier

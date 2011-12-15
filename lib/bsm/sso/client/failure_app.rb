@@ -3,8 +3,6 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
   include ActionController::Redirecting
   include Bsm::Sso::Client::UrlHelpers
 
-  NAVIGATIONAL_FORMATS = [:html, :all, :js, nil].to_set.freeze
-
   def self.call(env)
     action(:respond).call(env)
   end
@@ -14,7 +12,7 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
   end
 
   def respond
-    if NAVIGATIONAL_FORMATS.include?(request.format.try(:to_sym))
+    if Bsm::Sso::Client.navigational_formats.include?(request.format.try(:to_sym))
       request.xhr? ? respond_with_js! : redirect!
     else
       stop!

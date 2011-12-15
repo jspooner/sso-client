@@ -18,6 +18,6 @@ class Bsm::Sso::Client::Strategies::HttpAuth < Bsm::Sso::Client::Strategies::Bas
     @token ||= ActiveSupport::Base64.decode64($1).split(/:/, 2).first
   end
 
+  Warden::Strategies.add :sso_http_auth, self
 end
 
-Warden::Strategies.add :sso_http_auth, Bsm::Sso::Client::Strategies::HttpAuth
