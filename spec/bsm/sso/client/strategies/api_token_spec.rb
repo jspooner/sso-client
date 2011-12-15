@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe Bsm::Sso::Client::Strategies::APIToken do
 
-  def strategy(authorization = nil, format = Mime::JSON)
-    env = {}
+  def strategy(authorization = nil, format = Mime::JSON, env = {})
     env['HTTP_AUTHORIZATION'] = authorization if authorization
     env["action_dispatch.request.formats"] = [format]
     described_class.new(env_with_params('/', {}, env))
@@ -23,6 +22,8 @@ describe Bsm::Sso::Client::Strategies::APIToken do
 
   it "should be valid when API request" do
     strategy(basic_auth).should be_valid
+    strategy(basic_auth, Mime::XML, :method => "GET").should be_valid
+    strategy(basic_auth, Mime::XML, :method => "POST").should be_valid
     strategy(basic_auth, Mime::HTML).should_not be_valid
     strategy(basic_auth, Mime::ALL).should_not be_valid
     strategy(basic_auth, nil).should_not be_valid
@@ -32,6 +33,7 @@ describe Bsm::Sso::Client::Strategies::APIToken do
     strategy.should_not be_valid
     strategy("").should_not be_valid
     strategy("WRONG!").should_not be_valid
+    strategy(basic_auth(Date.today)).should_not be_valid
     strategy(basic_auth).should be_valid
   end
 
