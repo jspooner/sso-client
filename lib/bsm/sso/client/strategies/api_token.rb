@@ -11,7 +11,7 @@ class Bsm::Sso::Client::Strategies::APIToken < Bsm::Sso::Client::Strategies::Htt
   end
 
   def self.secret
-    Bsm::Sso::Client.secret
+    @secret ||= Bsm::Sso::Client.secret
   end
 
   def self.user_instance

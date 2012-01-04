@@ -20,6 +20,20 @@ describe Bsm::Sso::Client::Strategies::APIToken do
   it { strategy.should be_a(described_class) }
   it { strategy.should be_a(Bsm::Sso::Client::Strategies::HttpAuth) }
 
+  it "should default to global secret token" do
+    described_class.secret.should == "SECRET"
+  end
+
+  it "should default to global secret token" do
+    begin
+      described_class.secret = "CUSTOM"
+      described_class.secret.should == "CUSTOM"
+    ensure
+      described_class.instance_variable_set :@secret, nil
+      described_class.secret.should == "SECRET"
+    end
+  end
+
   it "should be valid when API request" do
     strategy(basic_auth).should be_valid
     strategy(basic_auth, Mime::XML, :method => "GET").should be_valid
