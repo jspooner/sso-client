@@ -1,5 +1,4 @@
 class Bsm::Sso::Client::Strategies::APIToken < Bsm::Sso::Client::Strategies::HttpAuth
-  extend ActiveSupport::Memoizable
 
   def self.verifier
     @verifier ||= ActiveSupport::MessageVerifier.new(secret)
@@ -35,12 +34,15 @@ class Bsm::Sso::Client::Strategies::APIToken < Bsm::Sso::Client::Strategies::Htt
   end
 
   def expiration
-    result = self.class.verifier.verify(token)
-    result if result.acts_like?(:time)
-  rescue ActiveSupport::MessageVerifier::InvalidSignature
-    nil
+    return @expiration if defined?(@expiration)
+
+    @expiration = begin
+      result = self.class.verifier.verify(token)
+      result if result.acts_like?(:time)
+    rescue ActiveSupport::MessageVerifier::InvalidSignature
+      nil
+    end
   end
-  memoize :expiration
 
   Warden::Strategies.add :sso_api_token, self
 end
