@@ -8,6 +8,7 @@ require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
 require 'active_resource'
 require 'action_controller'
+require 'action_controller/metal/exceptions'
 require 'rails_warden'
 
 module Bsm
