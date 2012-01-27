@@ -2,6 +2,7 @@ require 'bsm/sso/client'
 require 'rails'
 
 class Bsm::Sso::Client::Railtie < ::Rails::Railtie
+  RESCUE_RESPONSES = { "Bsm::Sso::Client::UnauthorizedAccess" => :forbidden }.freeze
 
   config.app_middleware.use RailsWarden::Manager do |manager|
     manager.default_strategies :sso_ticket, :sso_http_auth
@@ -9,9 +10,13 @@ class Bsm::Sso::Client::Railtie < ::Rails::Railtie
     Bsm::Sso::Client.warden_configuration.call(manager) if Bsm::Sso::Client.warden_configuration
   end
 
-  config.after_initialize do
-    if defined?(::ActionDispatch::ShowExceptions)
-      ActionDispatch::ShowExceptions.rescue_responses.update("Bsm::Sso::Client::UnauthorizedAccess" => :forbidden)
+  if config.action_dispatch.key?(:rescue_responses) # Rails >= 3.2.0
+    config.action_dispatch.rescue_responses.merge!(RESCUE_RESPONSES)
+  else
+    config.after_initialize do
+      if defined?(::ActionDispatch::ShowExceptions)
+        ActionDispatch::ShowExceptions.rescue_responses.merge!(RESCUE_RESPONSES)
+      end
     end
   end
 
