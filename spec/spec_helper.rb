@@ -1,6 +1,7 @@
 $TESTING=true
 $:.unshift File.dirname(__FILE__)
 $:.unshift File.expand_path('../../lib', __FILE__)
+ENV["RAILS_ENV"] ||= 'test'
 
 require 'rubygems'
 require 'bundler/setup'

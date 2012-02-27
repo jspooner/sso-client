@@ -44,6 +44,9 @@ module Bsm
       mattr_reader :api_formats
       @@api_formats = [:xml, :json].to_set
 
+      mattr_accessor :cache_store
+      @@cache_store = ActiveSupport::Cache::NullStore.new :namespace => "bsm:sso:client:#{Rails.env}"
+
       class << self
 
         delegate :site=, :site, :to => :"Bsm::Sso::Client::AbstractResource"

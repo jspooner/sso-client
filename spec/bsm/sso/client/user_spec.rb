@@ -8,6 +8,16 @@ describe Bsm::Sso::Client::User do
     a_request(:get, "https://sso.test.host/users/1.json").should have_been_made
   end
 
+  it 'should cache found instances' do
+    options = { :namespace => "bsm:sso:client:test", :expires_in => 3600 }
+    Bsm::Sso::Client.cache_store.should_receive(:read_entry).
+      with("bsm:sso:client:test:users:1", options)
+    Bsm::Sso::Client.cache_store.should_receive(:write).
+      with("users:1", instance_of(described_class), options)
+    stub_request(:any, //).to_return(:body => "{}")
+    described_class.sso_find(1)
+  end
+
   it 'should consume tickets' do
     stub_request(:any, //).to_return(:body => "{}")
     described_class.sso_consume('T', 'S')

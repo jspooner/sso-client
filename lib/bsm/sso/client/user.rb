@@ -2,7 +2,9 @@ class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
   class << self
 
     def sso_find(id)
-      find id
+      Bsm::Sso::Client.cache_store.fetch "users:#{id}", :expires_in => Bsm::Sso::Client.expire_after do
+        find(id)
+      end
     end
 
     def sso_consume(ticket, service)
