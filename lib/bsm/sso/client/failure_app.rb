@@ -1,6 +1,7 @@
 class Bsm::Sso::Client::FailureApp < ActionController::Metal
   include ActionController::RackDelegation
   include ActionController::Redirecting
+  include ActionController::Rendering
   include Bsm::Sso::Client::UrlHelpers
 
   def self.call(env)
@@ -29,9 +30,8 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
     self.response_body = "alert('Your session has expired');"
   end
 
-  # Throws UnauthorizedAccess (rescued as 403 Forbidden response)
-  def stop!(message = nil)
-    Bsm::Sso::Client.forbidden!(request, message)
+  def stop!
+    render :text => "<html><head></head><body><h1>Access Forbidden</h1></body></html>", :status => 403, :content_type => Mime::HTML
   end
 
 end

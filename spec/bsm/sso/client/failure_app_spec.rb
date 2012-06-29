@@ -26,7 +26,8 @@ describe Bsm::Sso::Client::FailureApp do
     end
 
     it "should fail with 403" do
-      lambda { response }.should raise_error(Bsm::Sso::Client::UnauthorizedAccess)
+      response.code.should == "403"
+      response.content_type.should == Mime::HTML
     end
 
   end
