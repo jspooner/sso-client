@@ -1,6 +1,7 @@
 require 'excon'
-require 'active_support/core_ext/object/to_query'
 require 'active_support/json'
+require 'active_support/core_ext/object/to_query'
+require 'active_support/core_ext/hash/keys'
 
 class Bsm::Sso::Client::AbstractResource < Hash
 
@@ -45,7 +46,7 @@ class Bsm::Sso::Client::AbstractResource < Hash
   # @param [Hash,NilClass] attributes the attributes to assign
   def initialize(attributes = nil)
     super()
-    update(attributes) if attributes.is_a?(Hash)
+    update(attributes.stringify_keys) if attributes.is_a?(Hash)
   end
 
   # @return [Integer] ID, the primary key

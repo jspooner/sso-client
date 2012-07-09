@@ -54,6 +54,10 @@ describe Bsm::Sso::Client::AbstractResource do
   its(:attributes) { should be_instance_of(described_class) }
   its(:attributes) { should == {"email"=>"noreply@example.com"} }
 
+  it 'should should have string attributes' do
+    described_class.new(:id => 1).should == {"id" => 1}
+  end
+
   it 'can be blank' do
     described_class.new.should == {}
   end
