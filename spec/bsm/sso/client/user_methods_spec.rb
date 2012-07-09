@@ -14,7 +14,7 @@ describe Bsm::Sso::Client::UserMethods do
   subject { TestCustomUserRecord }
 
   before do
-    stub_request(:any, //).to_return(:body => "{}")
+    stub_request(:any, //).to_return(:body => '{"id":1}')
   end
 
   it 'should delegate methods to the user resource' do

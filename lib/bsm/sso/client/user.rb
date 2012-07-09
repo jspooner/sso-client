@@ -1,28 +1,23 @@
 class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
+
   class << self
 
     def sso_find(id)
       Bsm::Sso::Client.cache_store.fetch "users:#{id}", :expires_in => Bsm::Sso::Client.expire_after do
-        find(id)
+        get "/users/#{id}", :expects => [200, 404]
       end
     end
 
     def sso_consume(ticket, service)
-      find :one, :from => '/consume', :params => { :ticket => ticket, :service => service }
-    rescue ActiveResource::ResourceInvalid
-      nil
+      get "/consume", :query => { :ticket => ticket, :service => service }
     end
 
     def sso_authorize(token)
-      find :one, :from => '/authorize', :params => { :auth_token => token }
-    rescue ActiveResource::ResourceInvalid
-      nil
+      get "/authorize", :query => { :auth_token => token }
     end
 
     def sso_authenticate(credentials)
-      find :one, :from => "/authenticate", :params => credentials.slice(:email, :password)
-    rescue ActiveResource::ResourceInvalid
-      nil
+      get "/authenticate", :query => credentials.slice(:email, :password)
     end
 
     def sso_sign_in_url(params = {})
@@ -36,7 +31,15 @@ class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
     private
 
       def sso_custom_absolute_method_root_url(method_name, params = {})
-        "#{site.to_s.chomp('/')}/#{method_name}#{query_string(params)}"
+        conn = site.connection
+        port = ""
+        unless conn[:port].blank? || (conn[:scheme] == "http" && conn[:port].to_i == 80) || (conn[:scheme] == "https" && conn[:port].to_i == 443)
+          port = ":#{conn[:port]}"
+        end
+
+        url  = "#{conn[:scheme]}://#{conn[:host]}#{port}/#{method_name.to_s}"
+        url << "?#{params.to_query}" unless params.empty?
+        url
       end
 
   end
