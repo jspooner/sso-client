@@ -32,9 +32,6 @@ module Bsm
       mattr_writer :user_class
       @@user_class = nil
 
-      mattr_accessor :user_attributes
-      @@user_attributes = {}
-
       mattr_accessor :warden_configuration
       @@warden_configuration = nil
 
@@ -53,10 +50,6 @@ module Bsm
 
         def user_class
           @@user_class || Bsm::Sso::Client::User
-        end
-
-        def user_instance
-          user_class.new(user_attributes)
         end
 
         # Default message verifier
