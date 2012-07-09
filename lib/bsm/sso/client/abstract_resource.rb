@@ -10,7 +10,7 @@ class Bsm::Sso::Client::AbstractResource < Hash
     def site=(url)
       @site = Excon.new url,
         :idempotent => true,
-        :expects    => 200,
+        :expects    => [200, 422],
         :headers    => { 'Accept' => Mime::JSON.to_s, 'Content-Type' => Mime::JSON.to_s }
     end
 
@@ -31,6 +31,8 @@ class Bsm::Sso::Client::AbstractResource < Hash
       params = params.merge(:path => path)
       params[:headers] = (params[:headers] || {}).merge(headers)
       response = site.get(params)
+      return nil unless response.status == 200
+
       instance = new ActiveSupport::JSON.decode(response.body)
       instance if instance.id
     rescue MultiJson::DecodeError

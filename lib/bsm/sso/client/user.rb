@@ -4,7 +4,7 @@ class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
 
     def sso_find(id)
       Bsm::Sso::Client.cache_store.fetch "users:#{id}", :expires_in => Bsm::Sso::Client.expire_after do
-        get "/users/#{id}", :expects => [200, 404]
+        get "/users/#{id}", :expects => [200, 404, 422]
       end
     end
 

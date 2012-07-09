@@ -37,6 +37,14 @@ describe Bsm::Sso::Client::AbstractResource do
     result.should be_instance_of(described_class)
     result.should == { "id" => 123 }
     result.id.should == 123
+
+    request.should have_been_made
+  end
+
+  it 'should not fail on error known responses' do
+    request = stub_request(:get, "https://sso.test.host/users/1").to_return :status => 422
+    described_class.get("/users/1").should be(nil)
+    request.should have_been_made
   end
 
   it { should be_a(Hash) }
