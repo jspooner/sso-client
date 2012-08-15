@@ -68,13 +68,14 @@ class Bsm::Sso::Client::AbstractResource < Hash
 
     def method_missing(method, *arguments)
       method, punctation = method.to_s.sub(/([=?])$/, ''), $1
-      return super unless key?(method)
 
       case punctation
       when "="
         store(method, arguments.first)
-      else
+      when "?"
         fetch(method)
+      else
+        key?(method) ? fetch(method) : super
       end
     end
 

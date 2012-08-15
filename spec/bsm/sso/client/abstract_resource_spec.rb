@@ -52,9 +52,10 @@ describe Bsm::Sso::Client::AbstractResource do
   it { should respond_to(:email=) }
   it { should respond_to(:email?) }
   it { should_not respond_to(:name) }
+  it { should_not respond_to(:name=) }
   it { should_not respond_to(:name?) }
 
-  its(:email) { should == "noreply@example.com" }
+  its(:email)  { should == "noreply@example.com" }
   its(:email?) { should == "noreply@example.com" }
   its(:attributes) { should be_instance_of(described_class) }
   its(:attributes) { should == {"email"=>"noreply@example.com"} }
@@ -62,6 +63,9 @@ describe Bsm::Sso::Client::AbstractResource do
   it 'should allow attribute assignment' do
     subject.email = "new@example.com"
     subject.email.should == "new@example.com"
+
+    subject.name  = "Name"
+    subject.name.should == "Name"
   end
 
   it 'should should have string attributes' do
