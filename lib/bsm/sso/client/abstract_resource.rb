@@ -73,7 +73,7 @@ class Bsm::Sso::Client::AbstractResource < Hash
       when "="
         store(method, arguments.first)
       when "?"
-        fetch(method)
+        self[method]
       else
         key?(method) ? fetch(method) : super
       end

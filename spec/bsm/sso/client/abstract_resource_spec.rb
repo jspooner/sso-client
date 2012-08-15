@@ -57,6 +57,7 @@ describe Bsm::Sso::Client::AbstractResource do
 
   its(:email)  { should == "noreply@example.com" }
   its(:email?) { should == "noreply@example.com" }
+  its(:name?)  { should be_nil }
   its(:attributes) { should be_instance_of(described_class) }
   its(:attributes) { should == {"email"=>"noreply@example.com"} }
 
