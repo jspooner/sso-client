@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bsm-sso-client (0.7.1)
+    bsm-sso-client (0.7.2)
       actionpack
       activesupport
       excon (>= 0.14.0)

@@ -56,7 +56,7 @@ class Bsm::Sso::Client::AbstractResource < Hash
 
   # @return [Boolean] true, if method exists?
   def respond_to?(method, *)
-    super || key?(method.to_s)
+    super || key?(method.to_s.sub(/[=?]$/, ''))
   end
 
   # @return [Hash] attributes hash
@@ -66,8 +66,16 @@ class Bsm::Sso::Client::AbstractResource < Hash
 
   protected
 
-    def method_missing(method, *)
-      key?(method.to_s) ? fetch(method.to_s) : super
+    def method_missing(method, *arguments)
+      method, punctation = method.to_s.sub(/([=?])$/, ''), $1
+      return super unless key?(method)
+
+      case punctation
+      when "="
+        store(method, arguments.first)
+      else
+        fetch(method)
+      end
     end
 
 end
