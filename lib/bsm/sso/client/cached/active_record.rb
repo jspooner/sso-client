@@ -6,15 +6,17 @@ module Bsm::Sso::Client::Cached::ActiveRecord
   include Bsm::Sso::Client::UserMethods
 
   included do
-    validates       :id, :presence => true, :on => :create
-    attr_accessible :id, :email, :kind, :level, :authentication_token, :as => :sso
+    self.mass_assignment_sanitizer = :logger # SSO might send more than we can chew
+
+    validates       :id, presence: true, on: :create
+    attr_accessible :id, :email, :kind, :level, :authentication_token, as: :sso
   end
 
   module ClassMethods
 
     # Retrieve cached
     def sso_find(id)
-      where(:id => id).first || super
+      where(id: id).first || super
     end
 
     # Cache!
@@ -22,18 +24,18 @@ module Bsm::Sso::Client::Cached::ActiveRecord
       return nil if token.blank?
 
       relation = where(arel_table[:updated_at].gt(Bsm::Sso::Client.expire_after.ago))
-      relation = relation.where(:authentication_token => token)
+      relation = relation.where(authentication_token: token)
       relation.first || super
     end
 
     # Cache!
     def sso_cache(resource, action = nil)
-      if record = where(:id => resource.id).first
-        record.assign_attributes resource.attributes, :as => :sso
+      if record = where(id: resource.id).first
+        record.assign_attributes resource.attributes, as: :sso
         record.changed? ? record.save! : record.touch
         record
       else
-        create! resource.attributes, :as => :sso
+        create! resource.attributes, as: :sso
       end
     end
 

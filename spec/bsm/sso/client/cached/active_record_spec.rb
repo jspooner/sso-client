@@ -30,6 +30,11 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
     it { should_not allow_mass_assignment_of(attribute) }
   end
 
+  it 'should not error on mass-assignment errors' do
+    subject.class._mass_assignment_sanitizer.should be_instance_of(ActiveModel::MassAssignmentSecurity::LoggerSanitizer)
+    lambda { subject.assign_attributes({ inaccessible: true }, as: :sso) }.should_not raise_error
+  end
+
   it 'should accept IDs as parameters' do
     User.new({ :id => '123' }, :as => :sso).id.should == 123
     User.new({ :id => '123' }, :as => :sso).should_not be_persisted
