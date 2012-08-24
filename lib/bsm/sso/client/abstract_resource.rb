@@ -30,22 +30,19 @@ class Bsm::Sso::Client::AbstractResource < Hash
     # @return [Bsm::Sso::Client::AbstractResource] fetches object from remote
     def get(path, params = {})
       params[:query] ||= params.delete(:params)
-      collection = params.delete(:collection)
-      params = params.merge(:path => path)
+      collection       = params.delete(:collection)
+      params           = params.merge(:path => path)
       params[:headers] = (params[:headers] || {}).merge(headers)
+
       response = site.get(params)
       return (collection ? [] : nil) unless response.status == 200
 
-      result = ActiveSupport::JSON.decode(response.body) 
-      if collection
-        result.map do |record|
-          instance = new(record)
-          instance if instance.id
-        end.compact
-      else
-        instance = new result
+      result = ActiveSupport::JSON.decode(response.body)
+      result = Array.wrap(result).map do |record|
+        instance = new(record)
         instance if instance.id
-      end
+      end.compact
+      collection ? result : result.first
     rescue MultiJson::DecodeError
       collection ? [] : nil
     end
