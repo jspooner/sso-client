@@ -47,6 +47,25 @@ describe Bsm::Sso::Client::AbstractResource do
     request.should have_been_made
   end
 
+  it 'should get remote collection' do
+    request = stub_request(:get, "https://sso.test.host/users?b=2").
+      with(:headers => {
+        'Accept'=>'application/json',
+        'Authorization'=>'TOKEN',
+        'Content-Type'=>'application/json',
+        'Host'=>'sso.test.host:443',
+        'a' => 1
+      }).to_return :status => 200, :body => %([{ "id": 123 }])
+
+    result  = described_class.get("/users", :headers => { 'a' => 1 }, :query => { 'b' => 2 }, :collection => true)
+    result.should be_an(Array) 
+    result.first.should be_instance_of(described_class)
+    result.first.should == { "id" => 123 }
+    result.first.id.should == 123
+
+    request.should have_been_made
+  end
+
   it { should be_a(Hash) }
   it { should respond_to(:email) }
   it { should respond_to(:email=) }

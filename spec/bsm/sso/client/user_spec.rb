@@ -12,6 +12,18 @@ describe Bsm::Sso::Client::User do
     request.should have_been_made
   end
 
+  it 'should find all instances' do
+    request = stub_request(:get, "https://sso.test.host/users?only=clients").with do |req|
+      req.headers.keys.should =~ ["Accept", "Authorization", "Content-Type", "Host"]
+    end.to_return :status => 200, :body => %([{ "id": 1 }])
+    instances = described_class.all(:params => {:only => 'clients'}) # mimic ARes with params
+    instances.should be_an(Array)
+    instance  = instances.first
+    instance.should be_instance_of(described_class)
+    instance.should == { "id" => 1 }
+    request.should have_been_made
+  end
+
   it 'should not fail on missing instances' do
     request  = stub_request(:get, "https://sso.test.host/users/1").to_return :status => 404
     described_class.sso_find(1).should be_nil

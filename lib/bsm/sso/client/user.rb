@@ -2,6 +2,10 @@ class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
 
   class << self
 
+    def all(options={})
+      get("/users", options.reverse_merge(:expects => [200, 404, 422], :collection => true))
+    end
+
     def sso_find(id)
       Bsm::Sso::Client.cache_store.fetch "users:#{id}", :expires_in => Bsm::Sso::Client.expire_after do
         get "/users/#{id}", :expects => [200, 404, 422]
