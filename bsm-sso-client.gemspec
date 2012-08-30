@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "activesupport"
   s.add_dependency "rails_warden", "~> 0.5.0"
   s.add_dependency "excon", ">= 0.14.0"
+  s.add_dependency "cancan", "~> 1.6.8"
 
   s.add_development_dependency "activerecord"
   s.add_development_dependency "rake"

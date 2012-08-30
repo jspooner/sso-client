@@ -21,6 +21,7 @@ module Bsm
       autoload :UrlHelpers, 'bsm/sso/client/url_helpers'
       autoload :FailureApp, 'bsm/sso/client/failure_app'
       autoload :Cached, 'bsm/sso/client/cached'
+      autoload :Ability, 'bsm/sso/client/ability'
 
       mattr_accessor :secret
       @@secret = nil

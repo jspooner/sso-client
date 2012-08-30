@@ -35,9 +35,12 @@ ActiveRecord::Base.connection.create_table :users do |t|
   t.string  :kind
   t.integer :level
   t.string  :authentication_token
+  t.text    :roles
   t.timestamps
 end
 
 class User < ActiveRecord::Base
   include Bsm::Sso::Client::Cached::ActiveRecord
+  serialize :roles, Hash
+  attr_accessible :roles, as: :sso
 end
