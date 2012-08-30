@@ -5,6 +5,8 @@ describe Bsm::Sso::Client::Ability do
   class Bsm::Sso::Client::TestAbility
     include Bsm::Sso::Client::Ability
 
+    attr_reader :is_admin
+
     as :client, "main:role" do
     end
 
@@ -18,17 +20,24 @@ describe Bsm::Sso::Client::Ability do
     as :employee, "other:role" do
     end
 
-  end
-
-  let :user do
-    ::User.new.tap do |u| 
-      u.level = 0
-      u.roles = ["sub:role"]
+    as :employee, "administrator" do
+      @is_admin = true
     end
   end
 
+  def new_user(level=0, *roles)
+    ::User.new.tap do |u| 
+      u.level = level
+      u.roles = roles
+    end
+  end
+
+  let(:client)   { new_user 0, "sub:role" }
+  let(:employee) { new_user 60 }
+  let(:admin)    { new_user 90 }
+
   subject do
-    Bsm::Sso::Client::TestAbility.new(user)
+    Bsm::Sso::Client::TestAbility.new(client)
   end
 
   describe "class" do
@@ -37,11 +46,11 @@ describe Bsm::Sso::Client::Ability do
     it { should have(2).roles }
     its(:roles) { should be_instance_of(Hash) }
     its(:roles) { subject.keys.should =~ [:employee, :client] }
-    its(:roles) { subject[:employee].should have(1).item }
+    its(:roles) { subject[:employee].should have(2).items }
     its(:roles) { subject[:client].should have(3).items }
 
     it 'should define role methods' do
-      subject.should have(4).private_instance_methods(false)
+      subject.should have(5).private_instance_methods(false)
       subject.private_instance_methods(false).should include(:"as__client__main:role")
     end
   end
@@ -60,4 +69,9 @@ describe Bsm::Sso::Client::Ability do
     subject.send("as__client__other:role").should be(true)
   end
 
+  it 'should apply generic administrator role to admin users (if defined)' do
+    subject.is_admin.should be_nil
+    Bsm::Sso::Client::TestAbility.new(employee).is_admin.should be_nil
+    Bsm::Sso::Client::TestAbility.new(admin).is_admin.should be(true)
+  end
 end

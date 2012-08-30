@@ -43,4 +43,8 @@ class User < ActiveRecord::Base
   include Bsm::Sso::Client::Cached::ActiveRecord
   serialize :roles, Hash
   attr_accessible :roles, as: :sso
+
+  def employee?
+    level >= 60
+  end
 end
