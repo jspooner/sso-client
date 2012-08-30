@@ -1,7 +1,7 @@
 begin
   require 'cancan/ability'
 rescue LoadError => e
-  warn "\n [!] Please install `cancan` Gem to use the Ability class\n"
+  warn "\n [!] Please install `cancan` Gem to use the Ability module\n"
   raise
 end
 
