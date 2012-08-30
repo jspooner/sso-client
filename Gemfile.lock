@@ -4,8 +4,7 @@ PATH
     bsm-sso-client (0.7.5)
       actionpack
       activesupport
-      cancan (~> 1.6.8)
-      excon (>= 0.14.0)
+      excon (>= 0.16.0)
       rails_warden (~> 0.5.0)
       railties (>= 3.2.0)
 
@@ -95,6 +94,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   bsm-sso-client!
+  cancan (~> 1.6.8)
   rack-test
   rake
   rspec

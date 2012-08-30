@@ -1,4 +1,9 @@
-require 'cancan/ability'
+begin
+  require 'cancan/ability'
+rescue LoadError => e
+  warn "\n [!] Please install `cancan` Gem to use the Ability class\n"
+  raise
+end
 
 module Bsm::Sso::Client::Ability
   extend ActiveSupport::Concern
