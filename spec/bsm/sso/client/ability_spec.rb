@@ -29,16 +29,17 @@ describe Bsm::Sso::Client::Ability do
     end
   end
 
-  def new_user(level=0, *roles)
+  def new_user(kind, level=0, *roles)
     ::User.new.tap do |u|
+      u.kind  = kind
       u.level = level
       u.roles = roles
     end
   end
 
-  let(:client)   { new_user 0, "sub:role" }
-  let(:employee) { new_user 60 }
-  let(:admin)    { new_user 90 }
+  let(:client)   { new_user "client", 0, "sub:role" }
+  let(:employee) { new_user "employee", 60 }
+  let(:admin)    { new_user "employee", 90 }
 
   subject do
     Bsm::Sso::Client::TestAbility.new(client)

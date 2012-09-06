@@ -60,7 +60,7 @@ module Bsm::Sso::Client::Ability
 
   # @return [Symbol] the user scope
   def scope
-    @scope ||= (user.respond_to?(:employee?) && user.employee? ? :employee : :client)
+    @scope ||= (user.respond_to?(:kind) && user.kind? ? user.kind.to_sym : :client)
   end
 
   # @return [Set] applied roles
