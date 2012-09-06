@@ -55,7 +55,7 @@ module Bsm::Sso::Client::Ability
     end
 
     same_as(:any)
-    same_as(:administrator) if @user.level >= 90
+    same_as(:administrator) if administrator?
   end
 
   # @return [Symbol] the user scope
@@ -74,5 +74,11 @@ module Bsm::Sso::Client::Ability
     method = :"as__#{scope}__#{name}"
     send(method) if respond_to?(method, true)
   end
+
+  private
+
+    def administrator?
+      (@user.respond_to?(:level?) && @user.level.to_i >= 90) || (@user.respond_to?(:admin?) && @user.admin?)
+    end
 
 end
