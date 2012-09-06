@@ -53,9 +53,9 @@ module Bsm::Sso::Client::Ability
     @user.roles.each do |name|
       same_as(name)
     end
-    if @user.level >= 90
-      same_as(:administrator)
-    end
+
+    same_as(:any)
+    same_as(:administrator) if @user.level >= 90
   end
 
   # @return [Symbol] the user scope

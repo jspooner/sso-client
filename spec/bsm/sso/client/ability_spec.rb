@@ -5,7 +5,7 @@ describe Bsm::Sso::Client::Ability do
   class Bsm::Sso::Client::TestAbility
     include Bsm::Sso::Client::Ability
 
-    attr_reader :is_admin
+    attr_reader :is_admin, :is_any
 
     as :client, "main:role" do
     end
@@ -20,13 +20,17 @@ describe Bsm::Sso::Client::Ability do
     as :employee, "other:role" do
     end
 
+    as :employee, "any" do
+      @is_any = true
+    end
+
     as :employee, "administrator" do
       @is_admin = true
     end
   end
 
   def new_user(level=0, *roles)
-    ::User.new.tap do |u| 
+    ::User.new.tap do |u|
       u.level = level
       u.roles = roles
     end
@@ -46,11 +50,11 @@ describe Bsm::Sso::Client::Ability do
     it { should have(2).roles }
     its(:roles) { should be_instance_of(Hash) }
     its(:roles) { subject.keys.should =~ [:employee, :client] }
-    its(:roles) { subject[:employee].should have(2).items }
+    its(:roles) { subject[:employee].should have(3).items }
     its(:roles) { subject[:client].should have(3).items }
 
     it 'should define role methods' do
-      subject.should have(5).private_instance_methods(false)
+      subject.should have(6).private_instance_methods(false)
       subject.private_instance_methods(false).should include(:"as__client__main:role")
     end
   end
@@ -67,6 +71,12 @@ describe Bsm::Sso::Client::Ability do
   it 'should not allow role application from different scopes' do
     subject.send("as__employee__other:role").should be(false)
     subject.send("as__client__other:role").should be(true)
+  end
+
+  it 'should apply generic any role to ALL users (if defined)' do
+    subject.is_any.should be_nil
+    Bsm::Sso::Client::TestAbility.new(employee).is_any.should be(true)
+    Bsm::Sso::Client::TestAbility.new(admin).is_any.should be(true)
   end
 
   it 'should apply generic administrator role to admin users (if defined)' do
