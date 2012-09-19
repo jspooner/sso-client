@@ -13,7 +13,7 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
   end
 
   def respond
-    if Bsm::Sso::Client.navigational_formats.include?(request.format.try(:to_sym))
+    if Bsm::Sso::Client.navigational_formats.include?(request.format.try(:to_sym)) || request.accepts.include?(Mime::HTML)
       request.xhr? ? respond_with_js! : redirect!
     else
       stop!
@@ -21,7 +21,8 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
   end
 
   def redirect!
-    redirect_to Bsm::Sso::Client.user_class.sso_sign_in_url(:service => service_url(env["warden.options"][:attempted_path])), :status => 303
+    path = env["warden.options"].try(:[], :attempted_path) || request.fullpath
+    redirect_to Bsm::Sso::Client.user_class.sso_sign_in_url(:service => service_url(path)), :status => 303
   end
 
   def respond_with_js!
