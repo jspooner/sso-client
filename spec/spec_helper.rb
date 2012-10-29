@@ -10,6 +10,7 @@ WebMock.disable_net_connect!
 
 require 'rails'
 require 'active_record'
+require 'rspec'
 require 'shoulda/matchers'
 require 'bsm/sso/client'
 

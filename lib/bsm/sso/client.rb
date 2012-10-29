@@ -22,6 +22,7 @@ module Bsm
       autoload :FailureApp, 'bsm/sso/client/failure_app'
       autoload :Cached, 'bsm/sso/client/cached'
       autoload :Ability, 'bsm/sso/client/ability'
+      autoload :AuthorizedController, 'bsm/sso/client/authorized_controller'
 
       mattr_accessor :secret
       @@secret = nil
