@@ -5,9 +5,12 @@ rescue LoadError => e
   raise
 end
 
-class Bsm::Sso::Client::AuthorizedController < InheritedResources::Base
+module Bsm::Sso::Client::AuthorizedController
+  extend ActiveSupport::Concern
 
-  before_filter :authorize_inherited_resource!
+  included do
+    before_filter :authorize_inherited_resource!
+  end
 
   protected
 
