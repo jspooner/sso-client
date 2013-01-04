@@ -22,7 +22,7 @@ class Bsm::Sso::Client::AbstractResource < Hash
 
     # @return [Hash] default headers
     def headers
-      { 'Authorization' => Bsm::Sso::Client.verifier.generate(30.seconds.from_now) }
+      { 'Authorization' => Bsm::Sso::Client.verifier.generate(Bsm::Sso::Client.token_timeout.from_now) }
     end
 
     # @param [String] path

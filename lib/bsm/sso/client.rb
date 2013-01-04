@@ -27,6 +27,9 @@ module Bsm
       mattr_accessor :secret
       @@secret = nil
 
+      mattr_accessor :token_timeout
+      @@token_timeout = 60.seconds
+
       mattr_accessor :expire_after
       @@expire_after = 2.hours
 
