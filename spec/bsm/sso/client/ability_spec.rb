@@ -49,10 +49,14 @@ describe Bsm::Sso::Client::Ability do
     subject { Bsm::Sso::Client::TestAbility }
 
     it { should have(2).roles }
-    its(:roles) { should be_instance_of(Hash) }
-    its(:roles) { subject.keys.should =~ [:employee, :client] }
-    its(:roles) { subject[:employee].should have(3).items }
-    its(:roles) { subject[:client].should have(3).items }
+
+    describe "roles" do
+      subject { Bsm::Sso::Client::TestAbility.roles }
+      it { should be_instance_of(Hash) }
+      its(:keys) { should =~ [:employee, :client] }
+      its([:employee]) { should have(3).items }
+      its([:client])   { should have(3).items }
+    end
 
     it 'should define role methods' do
       subject.should have(6).private_instance_methods(false)

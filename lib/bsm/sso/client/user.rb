@@ -35,7 +35,7 @@ class Bsm::Sso::Client::User < Bsm::Sso::Client::AbstractResource
     private
 
       def sso_custom_absolute_method_root_url(method_name, params = {})
-        conn = site.connection
+        conn = site.data
         port = ""
         unless conn[:port].blank? || (conn[:scheme] == "http" && conn[:port].to_i == 80) || (conn[:scheme] == "https" && conn[:port].to_i == 443)
           port = ":#{conn[:port]}"

@@ -13,9 +13,9 @@ describe Bsm::Sso::Client::AbstractResource do
   it 'should use site from configuration' do
     site = described_class.site
     site.should be_instance_of(Excon::Connection)
-    site.connection[:host].should == "sso.test.host"
-    site.connection[:idempotent].should be(true)
-    site.connection[:headers].should == { "Accept"=>"application/json", "Content-Type"=>"application/json" }
+    site.data[:host].should == "sso.test.host"
+    site.data[:idempotent].should be(true)
+    site.data[:headers].should == { "Accept"=>"application/json", "Content-Type"=>"application/json" }
   end
 
   it 'should set default headers using secret' do
@@ -58,7 +58,7 @@ describe Bsm::Sso::Client::AbstractResource do
       }).to_return :status => 200, :body => %([{ "id": 123 }])
 
     result  = described_class.get("/users", :headers => { 'a' => 1 }, :query => { 'b' => 2 }, :collection => true)
-    result.should be_an(Array) 
+    result.should be_an(Array)
     result.first.should be_instance_of(described_class)
     result.first.should == { "id" => 123 }
     result.first.id.should == 123
