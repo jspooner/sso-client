@@ -23,8 +23,10 @@ describe Bsm::Sso::Client do
   end
 
   it 'should have a message verifier' do
-    described_class.verifier.should be_a(ActiveSupport::MessageVerifier)
-    described_class.verifier.generate(Time.at(0).utc).should == "BAhJdToJVGltZQ0ggBHAAAAAAAY6C0Bfem9uZUkiCFVUQwY6BkVU--e12c751a942753c2a016e736d28ab53f856950ca"
+    v = described_class.verifier
+    v.should be_a(ActiveSupport::MessageVerifier)
+    time = Time.now
+    v.verify(v.generate(time)).should == time
   end
 
   it 'should have a default user class' do
