@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "actionpack"
   s.add_dependency "activesupport"
   s.add_dependency "rails_warden", "~> 0.5.0"
-  s.add_dependency "excon", ">= 0.16.0"
+  s.add_dependency "excon", ">= 0.19.5"
 
   s.add_development_dependency "cancan", "~> 1.6.8"
   s.add_development_dependency "activerecord"

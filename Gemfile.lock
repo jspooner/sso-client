@@ -4,7 +4,7 @@ PATH
     bsm-sso-client (0.7.12)
       actionpack
       activesupport
-      excon (>= 0.16.0)
+      excon (>= 0.19.5)
       rails_warden (~> 0.5.0)
       railties (>= 3.2.0)
 
