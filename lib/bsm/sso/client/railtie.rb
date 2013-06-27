@@ -10,14 +10,8 @@ class Bsm::Sso::Client::Railtie < ::Rails::Railtie
     Bsm::Sso::Client.warden_configuration.call(manager) if Bsm::Sso::Client.warden_configuration
   end
 
-  if config.action_dispatch.key?(:rescue_responses) # Rails >= 3.2.0
+  if config.action_dispatch.key?(:rescue_responses)
     config.action_dispatch.rescue_responses.merge!(RESCUE_RESPONSES)
-  else
-    config.after_initialize do
-      if defined?(::ActionDispatch::ShowExceptions)
-        ActionDispatch::ShowExceptions.rescue_responses.merge!(RESCUE_RESPONSES)
-      end
-    end
   end
 
 end

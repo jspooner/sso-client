@@ -4,3 +4,4 @@ rvm:
   - 2.0.0
 gemfile:
   - Gemfile
+  - Gemfile.activerecord-3.2.x

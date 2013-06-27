@@ -6,10 +6,7 @@ module Bsm::Sso::Client::Cached::ActiveRecord
   include Bsm::Sso::Client::UserMethods
 
   included do
-    self.mass_assignment_sanitizer = :logger # SSO might send more than we can chew
-
     validates       :id, presence: true, on: :create
-    attr_accessible :id, :email, :kind, :level, :authentication_token, as: :sso
   end
 
   module ClassMethods
@@ -31,11 +28,11 @@ module Bsm::Sso::Client::Cached::ActiveRecord
     # Cache!
     def sso_cache(resource, action = nil)
       if record = where(id: resource.id).first
-        record.assign_attributes resource.attributes, as: :sso
+        record.assign_attributes(resource.attributes)
         record.changed? ? record.save! : record.touch
         record
       else
-        create! resource.attributes, as: :sso
+        create!(resource.attributes)
       end
     end
 

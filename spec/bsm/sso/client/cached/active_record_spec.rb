@@ -11,7 +11,8 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
   end
 
   let :record do
-    User.create!({:id => 100, :email => "alice@example.com", :kind => "user", :level => 10, :authentication_token => "SECRET"}, :as => :sso)
+    attrs = {id: 100, email: "alice@example.com", kind: "user", level: 10, authentication_token: "SECRET"}
+    User.create! attrs
   end
 
   def resource(attrs = {})
@@ -19,25 +20,15 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
   end
 
   let :new_resource do
-    Bsm::Sso::Client::User.new :id => 200, :email => "new@example.com"
+    Bsm::Sso::Client::User.new id: 200, email: "new@example.com"
   end
 
   it { should be_a(described_class) }
   it { should validate_presence_of(:id) }
 
-  [:id, :email, :kind, :level, :authentication_token].each do |attribute|
-    it { should allow_mass_assignment_of(attribute).as(:sso) }
-    it { should_not allow_mass_assignment_of(attribute) }
-  end
-
-  it 'should not error on mass-assignment errors' do
-    subject.class._mass_assignment_sanitizer.should be_instance_of(ActiveModel::MassAssignmentSecurity::LoggerSanitizer)
-    lambda { subject.assign_attributes({ inaccessible: true }, as: :sso) }.should_not raise_error
-  end
-
   it 'should accept IDs as parameters' do
-    User.new({ :id => '123' }, :as => :sso).id.should == 123
-    User.new({ :id => '123' }, :as => :sso).should_not be_persisted
+    User.new(id: '123').id.should == 123
+    User.new(id: '123').should_not be_persisted
   end
 
   it 'should find records' do
@@ -77,7 +68,7 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
 
   it 'should cache (and update) existing records when changed' do
     lambda {
-      User.sso_cache(resource(:level => 20)).should == record
+      User.sso_cache(resource(level: 20)).should == record
     }.should change { record.reload.level }.from(10).to(20)
   end
 

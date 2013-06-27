@@ -43,7 +43,7 @@ end
 class User < ActiveRecord::Base
   include Bsm::Sso::Client::Cached::ActiveRecord
   serialize :roles, Hash
-  attr_accessible :roles, as: :sso
+  attr_accessible :roles, as: :sso if ActiveRecord::VERSION::STRING < '4.0'
 
   def employee?
     level >= 60

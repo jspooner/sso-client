@@ -1,6 +1,5 @@
 require 'rails'
 require 'active_support/message_verifier'
-require 'active_support/memoizable'
 require 'active_support/core_ext/object/acts_like'
 require 'active_support/core_ext/time/acts_like'
 require 'active_support/core_ext/date_time/acts_like'
