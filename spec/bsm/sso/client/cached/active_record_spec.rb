@@ -70,11 +70,21 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
     lambda {
       User.sso_cache(resource(level: 20)).should == record
     }.should change { record.reload.level }.from(10).to(20)
+
+    lambda {
+      User.sso_cache(resource("level" => 10)).should == record
+    }.should change { record.reload.level }.from(20).to(10)
   end
 
   it 'should cache (and touch) existing records even when unchanged' do
     lambda {
       User.sso_cache(resource).should == record
+    }.should change { record.reload.updated_at }
+  end
+
+  it 'should only cache known attributes' do
+    lambda {
+      User.sso_cache(resource(unknown: "value")).should == record
     }.should change { record.reload.updated_at }
   end
 

@@ -6,7 +6,7 @@ module Bsm::Sso::Client::Cached::ActiveRecord
   include Bsm::Sso::Client::UserMethods
 
   included do
-    validates       :id, presence: true, on: :create
+    validates :id, presence: true, on: :create
   end
 
   module ClassMethods
@@ -28,7 +28,7 @@ module Bsm::Sso::Client::Cached::ActiveRecord
     # Cache!
     def sso_cache(resource, action = nil)
       if record = where(id: resource.id).first
-        record.assign_attributes(resource.attributes)
+        record.attributes = resource.attributes.slice(*record.attribute_names)
         record.changed? ? record.save! : record.touch
         record
       else
