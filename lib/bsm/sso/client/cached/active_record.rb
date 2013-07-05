@@ -27,13 +27,10 @@ module Bsm::Sso::Client::Cached::ActiveRecord
 
     # Cache!
     def sso_cache(resource, action = nil)
-      if record = where(id: resource.id).first
-        record.attributes = resource.attributes.slice(*record.attribute_names)
-        record.changed? ? record.save! : record.touch
-        record
-      else
-        create!(resource.attributes)
-      end
+      record = where(id: resource.id).first_or_initialize
+      record.attributes = resource.attributes.slice(*record.attribute_names)
+      record.changed? ? record.save! : record.touch
+      record
     end
 
   end

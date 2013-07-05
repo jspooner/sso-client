@@ -88,4 +88,11 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
     }.should change { record.reload.updated_at }
   end
 
+  it 'should only cache known attributes for new records' do
+    record.destroy
+    lambda {
+      User.sso_cache(resource(unknown: "value"))
+    }.should_not raise_error
+  end
+
 end
