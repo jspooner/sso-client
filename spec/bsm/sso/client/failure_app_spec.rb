@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Bsm::Sso::Client::FailureApp do
 
   let :env do
-    env_with_params.merge("warden.options" => { :attempted_path => '/?a=1&b[]=2&b[]=3' })
+    env_with_params.merge("warden.options" => { attempted_path: '/?a=1&b[]=2&b[]=3' })
   end
 
   let :response do
@@ -22,7 +22,7 @@ describe Bsm::Sso::Client::FailureApp do
   describe "for API requests" do
 
     let :env do
-      env_with_params "/", :format => "json"
+      env_with_params "/", format: "json"
     end
 
     it "should fail with 403" do
@@ -35,7 +35,7 @@ describe Bsm::Sso::Client::FailureApp do
   describe "for API requests (from browsers)" do
 
     let :env do
-      env_with_params "/?a=1&b[]=2", {:format => "json"}, { "HTTP_ACCEPT" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" }
+      env_with_params "/?a=1&b[]=2", {format: "json"}, { "HTTP_ACCEPT" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" }
     end
 
     it "should fail with 403" do
@@ -48,7 +48,7 @@ describe Bsm::Sso::Client::FailureApp do
   describe "for XHR requests" do
 
     let :env do
-      env_with_params "/", { :format => "js" }, { "HTTP_X_REQUESTED_WITH" => "XMLHttpRequest" }
+      env_with_params "/", { format: "js" }, { "HTTP_X_REQUESTED_WITH" => "XMLHttpRequest" }
     end
 
     it "should respond with JS" do

@@ -30,13 +30,13 @@ describe Bsm::Sso::Client do
   end
 
   it 'should have a default user class' do
-    request = mock("Request", :path => "/admin")
+    request = double "Request", path: "/admin"
     lambda { described_class.forbidden!(request) }.should raise_error(Bsm::Sso::Client::UnauthorizedAccess)
   end
 
   it 'should have a cache store' do
     described_class.cache_store.should be_instance_of(ActiveSupport::Cache::NullStore)
-    described_class.cache_store.options.should == { :namespace => "bsm:sso:client:test" }
+    described_class.cache_store.options.should == { namespace: "bsm:sso:client:test" }
   end
 
 end

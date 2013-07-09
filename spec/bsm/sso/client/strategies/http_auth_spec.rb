@@ -29,7 +29,7 @@ describe Bsm::Sso::Client::Strategies::HttpAuth do
   end
 
   it "should authenticate user via authorize" do
-    Bsm::Sso::Client.user_class.should_receive(:sso_authorize).with('user').and_return(Bsm::Sso::Client.user_class.new(:id => 123))
+    Bsm::Sso::Client.user_class.should_receive(:sso_authorize).with('user').and_return(Bsm::Sso::Client.user_class.new(id: 123))
     strategy("Basic dXNlcjp4\n").authenticate!.should == :success
   end
 

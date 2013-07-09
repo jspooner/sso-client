@@ -10,7 +10,7 @@ describe Warden::SessionSerializer do
   end
 
   let :user do
-    mock "User", :id => 123
+    double "User", id: 123
   end
 
   describe "serialization" do
@@ -39,23 +39,23 @@ describe Warden::SessionSerializer do
     end
 
     it "should set an expiration timestamp on authentication" do
-      Time.stub! :now => Time.at(1313131313)
-      warden.set_user(user, :event => :authentication)
+      Time.stub now: Time.at(1313131313)
+      warden.set_user(user, event: :authentication)
       env['rack.session'].should == { "warden.user.default.key"=>123, "warden.user.default.session"=>{"expire_at"=>1313134913} }
     end
 
     it "should logout user when session expires on GET requests" do
-      warden.should_receive(:session).with(:default).and_return('expire_at' => 2.hours.ago)
+      warden.should_receive(:session).with(:default).and_return('expire_at'=>2.hours.ago)
       warden.should_receive(:logout)
-      lambda { warden.set_user(user, :event => :fetch) }.should throw_symbol(:warden)
+      lambda { warden.set_user(user, event: :fetch) }.should throw_symbol(:warden)
     end
 
 
     it "should continue even with expired sessions on non-GET" do
       env["REQUEST_METHOD"] = "POST"
-      warden.should_receive(:session).with(:default).and_return('expire_at' => 2.hours.ago)
+      warden.should_receive(:session).with(:default).and_return('expire_at'=>2.hours.ago)
       warden.should_not_receive(:logout)
-      lambda { warden.set_user(user, :event => :fetch) }.should_not throw_symbol(:warden)
+      lambda { warden.set_user(user, event: :fetch) }.should_not throw_symbol(:warden)
     end
 
   end

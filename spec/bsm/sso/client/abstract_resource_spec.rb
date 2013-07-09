@@ -7,7 +7,7 @@ describe Bsm::Sso::Client::AbstractResource do
   end
 
   before do
-    Bsm::Sso::Client.verifier.stub :generate => "TOKEN"
+    Bsm::Sso::Client.verifier.stub generate: "TOKEN"
   end
 
   it 'should use site from configuration' do
@@ -25,15 +25,15 @@ describe Bsm::Sso::Client::AbstractResource do
 
   it 'should get remote records' do
     request = stub_request(:get, "https://sso.test.host/users/123?b=2").
-      with(:headers => {
+      with(headers: {
         'Accept'=>'application/json',
         'Authorization'=>'TOKEN',
         'Content-Type'=>'application/json',
         'Host'=>'sso.test.host:443',
         'a' => 1
-      }).to_return :status => 200, :body => %({ "id": 123 })
+      }).to_return status: 200, body: %({ "id": 123 })
 
-    result  = described_class.get("/users/123", :headers => { 'a' => 1 }, :query => { 'b' => 2 })
+    result  = described_class.get("/users/123", headers: { 'a' => 1 }, query: { 'b' => 2 })
     result.should be_instance_of(described_class)
     result.should == { "id" => 123 }
     result.id.should == 123
@@ -42,22 +42,22 @@ describe Bsm::Sso::Client::AbstractResource do
   end
 
   it 'should not fail on error known responses' do
-    request = stub_request(:get, "https://sso.test.host/users/1").to_return :status => 422
+    request = stub_request(:get, "https://sso.test.host/users/1").to_return status: 422
     described_class.get("/users/1").should be(nil)
     request.should have_been_made
   end
 
   it 'should get remote collection' do
     request = stub_request(:get, "https://sso.test.host/users?b=2").
-      with(:headers => {
+      with(headers: {
         'Accept'=>'application/json',
         'Authorization'=>'TOKEN',
         'Content-Type'=>'application/json',
         'Host'=>'sso.test.host:443',
         'a' => 1
-      }).to_return :status => 200, :body => %([{ "id": 123 }])
+      }).to_return status: 200, body: %([{ "id": 123 }])
 
-    result  = described_class.get("/users", :headers => { 'a' => 1 }, :query => { 'b' => 2 }, :collection => true)
+    result  = described_class.get("/users", headers: { 'a' => 1 }, query: { 'b' => 2 }, collection: true)
     result.should be_an(Array)
     result.first.should be_instance_of(described_class)
     result.first.should == { "id" => 123 }
@@ -89,7 +89,7 @@ describe Bsm::Sso::Client::AbstractResource do
   end
 
   it 'should should have string attributes' do
-    described_class.new(:id => 1).should == {"id" => 1}
+    described_class.new(id: 1).should == {"id" => 1}
   end
 
   it 'can be blank' do

@@ -26,7 +26,7 @@ RSpec.configure do |c|
   c.include(Bsm::Sso::Client::SpecHelpers)
 
   c.before do
-    Bsm::Sso::Client.stub :secret => "SECRET"
+    Bsm::Sso::Client.stub secret: "SECRET"
   end
 end
 
