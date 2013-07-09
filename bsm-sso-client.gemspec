@@ -31,5 +31,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "webmock"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "inherited_resources"
+  s.add_development_dependency "protected_attributes"
 
 end

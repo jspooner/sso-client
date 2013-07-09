@@ -28,7 +28,9 @@ module Bsm::Sso::Client::Cached::ActiveRecord
     # Cache!
     def sso_cache(resource, action = nil)
       record = where(id: resource.id).first_or_initialize
-      record.attributes = resource.attributes.slice(*record.attribute_names)
+      attrs  = [resource.attributes.slice(*record.attribute_names)]
+      attrs << {without_protection: true} if defined?(ProtectedAttributes)
+      record.assign_attributes(*attrs)
       record.changed? ? record.save! : record.touch
       record
     end

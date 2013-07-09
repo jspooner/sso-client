@@ -12,6 +12,7 @@ require 'rails'
 require 'active_record'
 require 'rspec'
 require 'shoulda/matchers'
+require 'protected_attributes' if ENV['SSO_PA']
 require 'bsm/sso/client'
 
 Dir[File.join(File.dirname(__FILE__), "support", "**/*.rb")].each do |f|
@@ -43,7 +44,10 @@ end
 class User < ActiveRecord::Base
   include Bsm::Sso::Client::Cached::ActiveRecord
   serialize :roles, Hash
-  attr_accessible :roles, as: :sso if ActiveRecord::VERSION::STRING < '4.0'
+
+  if defined?(ProtectedAttributes)
+    attr_accessible :roles, as: :sso
+  end
 
   def employee?
     level >= 60

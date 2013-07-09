@@ -11,8 +11,9 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
   end
 
   let :record do
-    attrs = {id: 100, email: "alice@example.com", kind: "user", level: 10, authentication_token: "SECRET"}
-    User.create! attrs
+    args = [{id: 100, email: "alice@example.com", kind: "user", level: 10, authentication_token: "SECRET"}]
+    args << {without_protection: true} if defined?(ProtectedAttributes)
+    User.create! *args
   end
 
   def resource(attrs = {})
@@ -25,11 +26,6 @@ describe Bsm::Sso::Client::Cached::ActiveRecord do
 
   it { should be_a(described_class) }
   it { should validate_presence_of(:id) }
-
-  it 'should accept IDs as parameters' do
-    User.new(id: '123').id.should == 123
-    User.new(id: '123').should_not be_persisted
-  end
 
   it 'should find records' do
     User.sso_find(record.id).should == record
