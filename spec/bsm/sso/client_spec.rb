@@ -30,7 +30,7 @@ describe Bsm::Sso::Client do
   end
 
   it 'should have a default user class' do
-    request = mock("Request", :path => "/admin")
+    request = double("Request", :path => "/admin")
     lambda { described_class.forbidden!(request) }.should raise_error(Bsm::Sso::Client::UnauthorizedAccess)
   end
 

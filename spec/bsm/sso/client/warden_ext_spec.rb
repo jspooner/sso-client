@@ -10,7 +10,7 @@ describe Warden::SessionSerializer do
   end
 
   let :user do
-    mock "User", :id => 123
+    double "User", :id => 123
   end
 
   describe "serialization" do
@@ -39,7 +39,7 @@ describe Warden::SessionSerializer do
     end
 
     it "should set an expiration timestamp on authentication" do
-      Time.stub! :now => Time.at(1313131313)
+      Time.stub :now => Time.at(1313131313)
       warden.set_user(user, :event => :authentication)
       env['rack.session'].should == { "warden.user.default.key"=>123, "warden.user.default.session"=>{"expire_at"=>1313134913} }
     end
