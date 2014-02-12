@@ -22,6 +22,17 @@ describe Bsm::Sso::Client do
     described_class.user_class.should == described_class::User
   end
 
+  it 'should allow setting user class with class' do
+    klass = Class.new
+    described_class.user_class = klass
+    described_class.user_class.should == klass
+  end
+
+  it 'should allow setting user class with name' do
+    described_class.user_class = 'Bsm::Sso::Client::User'
+    described_class.user_class.should == described_class::User
+  end
+
   it 'should have a message verifier' do
     v = described_class.verifier
     v.should be_a(ActiveSupport::MessageVerifier)
@@ -40,4 +51,3 @@ describe Bsm::Sso::Client do
   end
 
 end
-

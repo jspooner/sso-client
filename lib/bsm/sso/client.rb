@@ -52,7 +52,11 @@ module Bsm
         delegate :site=, :site, :to => :"Bsm::Sso::Client::AbstractResource"
 
         def user_class
-          @@user_class || Bsm::Sso::Client::User
+          if @@user_class.respond_to?(:constantize)
+            @@user_class.constantize
+          else
+            @@user_class || Bsm::Sso::Client::User
+          end
         end
 
         # Default message verifier
