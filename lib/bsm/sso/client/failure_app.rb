@@ -1,7 +1,6 @@
 class Bsm::Sso::Client::FailureApp < ActionController::Metal
   include ActionController::RackDelegation
   include ActionController::Redirecting
-  include ActionController::Rendering
   include Bsm::Sso::Client::UrlHelpers
 
   def self.call(env)
@@ -32,7 +31,9 @@ class Bsm::Sso::Client::FailureApp < ActionController::Metal
   end
 
   def stop!
-    render :text => "<html><head></head><body><h1>Access Forbidden</h1></body></html>", :status => 403, :content_type => Mime::HTML
+    self.status = 403
+    self.content_type  = Mime::HTML
+    self.response_body = "<html><head></head><body><h1>Access Forbidden</h1></body></html>"
   end
 
 end

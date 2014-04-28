@@ -2,12 +2,17 @@ require 'spec_helper'
 
 describe Bsm::Sso::Client::Cached::ActiveRecord do
 
+  before do
+    I18n.enforce_available_locales = false
+  end
+
   subject do
     User.new
   end
 
   after do
     User.delete_all
+    I18n.enforce_available_locales = true
   end
 
   let :record do
