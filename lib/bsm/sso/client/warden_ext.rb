@@ -12,12 +12,13 @@ end
 
 Warden::Manager.after_set_user do |user, warden, opts|
   scope = opts[:scope]
-
   if user && opts[:event] == :authentication
     warden.session(scope)['expire_at'] = Bsm::Sso::Client.expire_after.from_now.to_i
   elsif opts[:event] == :fetch &&
         warden.session(scope)['expire_at'].to_i < Time.now.to_i &&
-        warden.request.env["REQUEST_METHOD"] == "GET"
+        warden.request.env["REQUEST_METHOD"] == "GET" &&
+        warden.user.class.ancestors.include?(Bsm::Sso::Client::Cached::ActiveRecord)
+    
     warden.logout(scope)
     throw :warden, :scope => scope, :message => :timeout
   end
